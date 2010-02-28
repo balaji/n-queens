@@ -3,28 +3,13 @@ package com.balaji.nqueens.ui;
 import com.balaji.nqueens.Position;
 import com.balaji.nqueens.Rules;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class GuiFrame extends JFrame {
 
@@ -177,7 +162,7 @@ public class GuiFrame extends JFrame {
         label.setIcon(null);
 
         if (p.checkPosition(i + 1, j + 1)) {
-          ImageIcon icon = new ImageIcon("queen.png");
+          ImageIcon icon = new ImageIcon(this.getClass().getResource("/queen.png"));
           label.setIcon(icon);
         }
       }

@@ -1,6 +1,5 @@
 package com.balaji.nqueens;
 
-import com.balaji.nqueens.MovesCalculator;
 import com.balaji.nqueens.ui.GuiFrame;
 
 public class Main {
