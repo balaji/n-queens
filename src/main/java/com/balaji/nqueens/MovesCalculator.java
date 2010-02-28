@@ -7,63 +7,67 @@ import java.util.List;
 
 public class MovesCalculator {
 
-  private static Deque<Position> moves = new ArrayDeque<Position>();
-  private Deque<Position> stack = new ArrayDeque<Position>();
-  private List<List<Position>> lists = new ArrayList<List<Position>>();
-  private static final int DIMENSION = Rules.LIMIT;
+  private Deque<Position> stack;
+  private List<List<Position>> lists;
 
-  private Position pop() {
-    return stack.isEmpty() ? null : stack.removeLast();
+  public MovesCalculator(Deque<Position> stack, List<List<Position>> lists) {
+    this.stack = stack;
+    this.lists = lists;
   }
 
-  private void emptyStack() {
-    moves.clear();
-    stack.clear();
+  private Position pop(Deque<Position> deque) {
+    return deque.isEmpty() ? null : deque.removeLast();
   }
 
-  public void process() {
-    for (int y = 1; y <= DIMENSION; y++) {
+  private void empty(Deque<Position> deque) {
+    deque.clear();
+  }
+
+  public List<List<Position>> process() {
+    for (int y = 1; y <= Rules.LIMIT; y++) {
       Position p = new Position(1, y);
+      Deque<Position> moves = new ArrayDeque<Position>();
       moves.addLast(p);
-      next(2);
+      next(2, moves);
     }
+    return lists;
   }
 
-  private void replace(Position p) {
-    while (moves.getLast().getX() >= p.getX()) {
-      moves.removeLast();
+  private void replace(Position p, Deque<Position> deque) {
+    while (deque.getLast().getX() >= p.getX()) {
+      deque.removeLast();
     }
-    moves.addLast(p);
+    deque.addLast(p);
   }
 
-  private void display() {
+  private void collect(Deque<Position> moves) {
     List<Position> list = new ArrayList<Position>();
     for (Position p : moves) {
       list.add(p);
     }
-    lists.add(list);
+    this.lists.add(list);
   }
 
-  private void backTrack() {
-    Position p = pop();
+  private void backTrack(Deque<Position> moves) {
+    Position p = pop(stack);
     if (p != null) {
-      replace(p);
-      next(p.getX() + 1);
+      replace(p, moves);
+      next(p.getX() + 1, moves);
     } else {
-      emptyStack();
+      empty(moves);
+      empty(stack);
     }
   }
 
-  private void next(int position) {
+  private void next(int place, Deque<Position> moves) {
 
     Position nextPos = null;
     Position identified = null;
     boolean flag = false;
 
-    for (int y = 1; y <= DIMENSION; y++) {
-      nextPos = new Position(position, y);
-      if (Rules.ruleDiagonal(nextPos) && Rules.ruleHorizontal(nextPos) && Rules.ruleVertical(nextPos)) {
-
+    for (int y = 1; y <= Rules.LIMIT; y++) {
+      nextPos = new Position(place, y);
+      if (Rules.ruleDiagonal(nextPos, moves) && Rules.ruleHorizontal(nextPos, moves) && Rules.ruleVertical(nextPos, moves)) {
         if (!flag) {
           flag = true;
           identified = nextPos;
@@ -75,22 +79,14 @@ public class MovesCalculator {
 
     if (flag) {
       moves.addLast(identified);
-      if (nextPos.getX() == DIMENSION) {
-        display();
-        backTrack();
+      if (nextPos.getX() == Rules.LIMIT) {
+        collect(moves);
+        backTrack(moves);
       } else {
-        next(nextPos.getX() + 1);
+        next(nextPos.getX() + 1, moves);
       }
     } else {
-      backTrack();
+      backTrack(moves);
     }
-  }
-
-  public List<List<Position>> getLists() {
-    return lists;
-  }
-
-  public static Deque<Position> getMoves() {
-    return moves;
   }
 }

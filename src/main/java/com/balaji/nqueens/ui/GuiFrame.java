@@ -1,5 +1,6 @@
 package com.balaji.nqueens.ui;
 
+import com.balaji.nqueens.MovesCalculator;
 import com.balaji.nqueens.Position;
 import com.balaji.nqueens.Rules;
 
@@ -7,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GuiFrame extends JFrame {
@@ -14,13 +18,19 @@ public class GuiFrame extends JFrame {
   private static int count = 0;
 
   public GuiFrame(List<List<Position>> list) {
+    draw(list);
+  }
+
+  private void draw(List<List<Position>> list) {
+    System.gc();
     Utils.setLookAndFeel(1, this);
     Utils.drawChessBoard(this);
-    prepareBottomPanel(list, new JLabel(Integer.toString(count + 1), SwingConstants.CENTER));
     if (!list.isEmpty()) {
+      prepareBottomPanel(list, new JLabel("1", SwingConstants.CENTER));
       placeQueens(list.get(0));
       Utils.createFrame(this, "N Queens", 600, 600);
     } else {
+      prepareBottomPanel(Collections.<List<Position>>emptyList(), new JLabel("0", SwingConstants.CENTER));
       showMessage("No Solutions");
     }
   }
@@ -53,7 +63,12 @@ public class GuiFrame extends JFrame {
     child.add(label);
     child.add(preparePreviousButton(list, label));
     child.add(prepareNextButton(list, label));
+    child.add(new JLabel(" Layout Style: "));
     child.add(prepareStyleCombo());
+    child.add(new JLabel(" N (4 - 10):"));
+    child.add(prepareNCombo());
+
+
     getContentPane().add(child, BorderLayout.SOUTH);
   }
 
@@ -102,6 +117,25 @@ public class GuiFrame extends JFrame {
           Utils.setLookAndFeel(2, parent);
         } else if ("Metal".equals(item)) {
           Utils.setLookAndFeel(3, parent);
+        }
+      }
+    });
+    return combo;
+  }
+
+  private JComboBox prepareNCombo() {
+    JComboBox combo = new JComboBox();
+    for (int i = 4; i < 11; i++) {
+      combo.addItem(i);
+    }
+    combo.setSelectedItem(Rules.LIMIT);
+    final GuiFrame parent = this;
+    combo.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        int newLimit = (Integer) ((JComboBox) e.getSource()).getSelectedItem();
+        if (Rules.LIMIT != newLimit) {
+          Rules.LIMIT = newLimit;
+          parent.draw(new MovesCalculator(new ArrayDeque<Position>(), new ArrayList<List<Position>>()).process());
         }
       }
     });
