@@ -62,9 +62,7 @@ public class MovesCalculator {
 
     for (int y = 1; y <= DIMENSION; y++) {
       nextPos = new Position(position, y);
-      if (Rules.ruleDiagonal(nextPos)
-          && Rules.ruleHorizontal(nextPos)
-          && Rules.ruleVertical(nextPos)) {
+      if (Rules.ruleDiagonal(nextPos) && Rules.ruleHorizontal(nextPos) && Rules.ruleVertical(nextPos)) {
 
         if (!flag) {
           flag = true;
@@ -95,5 +93,4 @@ public class MovesCalculator {
   public static Deque<Position> getMoves() {
     return moves;
   }
-
 }
