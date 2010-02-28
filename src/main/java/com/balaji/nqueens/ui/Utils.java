@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class Utils {
 
-  public static void setLookAndFeel(int option, JFrame frame) {
+  public static void setLookAndFeel(int option, GuiFrame frame) {
     try {
       if (option == 1) {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -22,6 +22,16 @@ public class Utils {
         }
       } else if (option == 3) {
         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+      } else if (option == 4) {
+        UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+      } else if (option == 5) {
+        UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
+      } else if (option == 6) {
+        UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+      } else if (option == 7) {
+        UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
+      } else if (option == 8) {
+        UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
       }
       SwingUtilities.updateComponentTreeUI(frame);
     } catch (ClassNotFoundException ex) {
@@ -32,6 +42,7 @@ public class Utils {
       Logger.getLogger(GuiFrame.class.getName()).log(Level.SEVERE, null, ex);
     } catch (UnsupportedLookAndFeelException ex) {
       Logger.getLogger(GuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+      frame.showMessage("Theme not supported.");
     }
   }
 

@@ -35,7 +35,7 @@ public class GuiFrame extends JFrame {
     }
   }
 
-  private void showMessage(String text) {
+  void showMessage(String text) {
     final JDialog dialog = Utils.createDialog(this, "Alert", text, 300, 100);
     JPanel bPanel = new JPanel();
     bPanel.add(prepareOkButton(dialog));
@@ -107,17 +107,16 @@ public class GuiFrame extends JFrame {
     combo.addItem("Default");
     combo.addItem("Nimbus");
     combo.addItem("Metal");
-    final JFrame parent = this;
+    combo.addItem("Windows");
+    combo.addItem("Plastic");
+    combo.addItem("Plastic3D");
+    combo.addItem("PlasticXP");
+    combo.addItem("Motif");
+    final GuiFrame parent = this;
     combo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        String item = (String) ((JComboBox) e.getSource()).getSelectedItem();
-        if ("Default".equals(item)) {
-          Utils.setLookAndFeel(1, parent);
-        } else if ("Nimbus".equals(item)) {
-          Utils.setLookAndFeel(2, parent);
-        } else if ("Metal".equals(item)) {
-          Utils.setLookAndFeel(3, parent);
-        }
+        int item = ((JComboBox) e.getSource()).getSelectedIndex();
+        Utils.setLookAndFeel(item + 1, parent);
       }
     });
     return combo;
