@@ -4,7 +4,7 @@ import com.balaji.nqueens.Position;
 import com.balaji.nqueens.Rules;
 
 import javax.swing.*;
-import java.awt.*; x
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
